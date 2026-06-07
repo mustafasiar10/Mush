@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NEXCORE — PC Hardware</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --black: #090909;
+    --white: #f5f3ee;
+    --accent: #e8ff00;
+    --accent2: #ff4b1f;
+    --gray: #1a1a1a;
+    --gray2: #2a2a2a;
+    --gray3: #3d3d3d;
+    --muted: #888;
+    --font-display: 'Barlow Condensed', sans-serif;
+    --font-body: 'DM Sans', sans-serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  a { color: inherit; text-decoration: none; }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    display: flex; align-items: center; gap: 24px;
+    padding: 0 40px; height: 60px;
+    background: rgba(10,10,10,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--gray2);
+  }
+  .nav-logo {
+    font-family: var(--font-display);
+    font-weight: 800; font-size: 22px; letter-spacing: 0.06em;
+    color: var(--accent); flex-shrink: 0;
+  }
+  .nav-links { display: flex; gap: 28px; flex: 1; }
+  .nav-links a {
+    font-family: var(--font-display); font-weight: 600;
+    font-size: 14px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--muted); transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+  .nav-search {
+    flex: 1; max-width: 280px;
+    display: flex; align-items: center; gap: 8px;
+    background: var(--gray); border: 1px solid var(--gray3);
+    border-radius: 6px; padding: 0 12px; height: 34px;
+  }
+  .nav-search input {
+    background: none; border: none; outline: none;
+    color: var(--white); font-family: var(--font-body); font-size: 13px; width: 100%;
+  }
+  .nav-search input::placeholder { color: var(--muted); }
+  .nav-search svg { flex-shrink: 0; color: var(--muted); }
+  .nav-actions { display: flex; gap: 12px; align-items: center; }
+  .nav-icon-btn {
+    width: 34px; height: 34px; border-radius: 6px;
+    background: var(--gray); border: 1px solid var(--gray3);
+    display: flex; align-items: center; justify-content: center;
+    color: var(--muted); cursor: pointer; transition: all .2s;
+    position: relative;
+  }
+  .nav-icon-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .cart-badge {
+    position: absolute; top: -4px; right: -4px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--accent); color: var(--black);
+    font-size: 9px; font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative; overflow: hidden;
+    min-height: 580px; display: flex; align-items: center;
+    padding: 80px 40px;
+    background: var(--black);
+  }
+  .hero-bg-grid {
+    position: absolute; inset: 0;
+    background-image: linear-gradient(var(--gray2) 1px, transparent 1px),
+                      linear-gradient(90deg, var(--gray2) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.25;
+  }
+  .hero-glow {
+    position: absolute; right: 0; top: 0;
+    width: 600px; height: 600px;
+    background: radial-gradient(ellipse at 70% 30%, rgba(232,255,0,0.08) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .hero-content { position: relative; z-index: 2; max-width: 560px; }
+  .hero-eyebrow {
+    font-family: var(--font-display); font-size: 14px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .hero-eyebrow::before {
+    content: ''; display: block; width: 32px; height: 2px; background: var(--accent);
+  }
+  .hero-title {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: clamp(56px, 8vw, 96px); line-height: 0.92;
+    letter-spacing: -0.01em; text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero-title em { color: var(--accent); font-style: normal; }
+  .hero-sub {
+    font-size: 16px; color: var(--muted); max-width: 400px;
+    line-height: 1.7; margin-bottom: 36px;
+  }
+  .hero-ctas { display: flex; gap: 12px; flex-wrap: wrap; }
+  .btn-primary {
+    font-family: var(--font-display); font-weight: 700; font-size: 15px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: var(--accent); color: var(--black);
+    padding: 13px 28px; border-radius: 4px; border: none; cursor: pointer;
+    transition: transform .15s, box-shadow .15s;
+  }
+  .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(232,255,0,0.25); }
+  .btn-outline {
+    font-family: var(--font-display); font-weight: 700; font-size: 15px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    background: transparent; color: var(--white);
+    padding: 12px 28px; border-radius: 4px; border: 1px solid var(--gray3); cursor: pointer;
+    transition: border-color .2s, color .2s;
+  }
+  .btn-outline:hover { border-color: var(--white); }
+  .hero-image {
+    position: absolute; right: 40px; bottom: 0; top: 0;
+    display: flex; align-items: center;
+    width: 50%; max-width: 560px;
+    pointer-events: none;
+  }
+  .hero-product-visual {
+    width: 100%; aspect-ratio: 1;
+    background: linear-gradient(135deg, var(--gray) 0%, var(--black) 100%);
+    border-radius: 16px; border: 1px solid var(--gray2);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .hero-product-visual::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: repeating-linear-gradient(45deg, transparent, transparent 4px, rgba(255,255,255,0.015) 4px, rgba(255,255,255,0.015) 8px);
+  }
+  .hero-chip {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 80px; color: rgba(255,255,255,0.04); letter-spacing: -0.04em;
+    position: absolute; user-select: none;
+  }
+  .hero-spec-badge {
+    position: absolute; background: var(--gray); border: 1px solid var(--gray3);
+    border-radius: 8px; padding: 10px 14px;
+    font-family: var(--font-display); font-size: 13px; font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+  .hero-spec-badge.b1 { top: 20%; left: 10%; }
+  .hero-spec-badge.b2 { bottom: 25%; right: 8%; }
+  .hero-spec-badge .val { font-size: 22px; font-weight: 800; color: var(--accent); display: block; }
+
+  /* ── TICKER ── */
+  .ticker {
+    background: var(--accent); color: var(--black);
+    height: 36px; overflow: hidden; position: relative;
+    display: flex; align-items: center;
+  }
+  .ticker-inner {
+    display: flex; gap: 0; white-space: nowrap;
+    animation: ticker 28s linear infinite;
+  }
+  .ticker-item {
+    font-family: var(--font-display); font-weight: 700; font-size: 13px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 0 32px; flex-shrink: 0;
+  }
+  .ticker-dot { opacity: 0.4; }
+  @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+  /* ── SECTION WRAPPERS ── */
+  section { padding: 80px 40px; }
+  .section-header {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    margin-bottom: 40px; gap: 16px;
+  }
+  .section-label {
+    font-family: var(--font-display); font-size: 12px; font-weight: 600;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: var(--font-display); font-weight: 800; font-size: 42px;
+    line-height: 1; letter-spacing: -0.01em; text-transform: uppercase;
+  }
+  .view-all {
+    font-family: var(--font-display); font-size: 13px; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted);
+    display: flex; align-items: center; gap: 6px; white-space: nowrap;
+    transition: color .2s; cursor: pointer;
+  }
+  .view-all:hover { color: var(--accent); }
+
+  /* ── CATEGORIES ── */
+  .categories { background: var(--gray); }
+  .cat-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+  }
+  .cat-card {
+    background: var(--black); border: 1px solid var(--gray2);
+    border-radius: 10px; padding: 24px 16px;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    cursor: pointer; transition: all .25s; text-align: center;
+  }
+  .cat-card:hover { border-color: var(--accent); transform: translateY(-3px); }
+  .cat-card:hover .cat-icon { color: var(--accent); }
+  .cat-icon {
+    font-size: 32px; color: var(--muted);
+    transition: color .25s;
+  }
+  .cat-name {
+    font-family: var(--font-display); font-weight: 700; font-size: 15px;
+    letter-spacing: 0.06em; text-transform: uppercase;
+  }
+  .cat-count { font-size: 12px; color: var(--muted); }
+
+  /* ── PROMO BANNERS ── */
+  .promo-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .promo-card {
+    border-radius: 10px; padding: 32px 28px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    min-height: 160px; cursor: pointer; transition: transform .2s;
+    position: relative; overflow: hidden;
+  }
+  .promo-card:hover { transform: translateY(-3px); }
+  .promo-card.dark { background: var(--gray); border: 1px solid var(--gray2); }
+  .promo-card.accent { background: var(--accent); color: var(--black); }
+  .promo-tag {
+    font-family: var(--font-display); font-size: 11px; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    opacity: 0.6; margin-bottom: 6px;
+  }
+  .promo-h {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 28px; line-height: 1; text-transform: uppercase;
+  }
+  .promo-card.accent .promo-h { color: var(--black); }
+  .promo-sub { font-size: 13px; opacity: 0.7; margin-top: 8px; }
+  .promo-arrow {
+    font-family: var(--font-display); font-weight: 700; font-size: 13px;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    margin-top: 20px; display: flex; align-items: center; gap: 6px;
+  }
+  .promo-deco {
+    position: absolute; right: -10px; bottom: -20px;
+    font-family: var(--font-display); font-weight: 800; font-size: 90px;
+    opacity: 0.07; letter-spacing: -0.04em; line-height: 1;
+    pointer-events: none;
+  }
+
+  /* ── PRODUCTS ── */
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+  }
+  .product-card {
+    background: var(--gray); border: 1px solid var(--gray2);
+    border-radius: 10px; overflow: hidden;
+    cursor: pointer; transition: all .25s;
+    display: flex; flex-direction: column;
+  }
+  .product-card:hover { border-color: var(--gray3); transform: translateY(-4px); }
+  .product-img {
+    aspect-ratio: 4/3; background: var(--black);
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .product-img-text {
+    font-family: var(--font-display); font-weight: 800;
+    font-size: 48px; color: rgba(255,255,255,0.05);
+    letter-spacing: -0.03em;
+  }
+  .product-badge {
+    position: absolute; top: 10px; left: 10px;
+    font-family: var(--font-display); font-size: 10px; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 3px 8px; border-radius: 3px;
+  }
+  .badge-new { background: var(--accent); color: var(--black); }
+  .badge-sale { background: var(--accent2); color: var(--white); }
+  .badge-hot { background: var(--gray3); color: var(--white); border: 1px solid var(--gray3); }
+  .product-body { padding: 16px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .product-brand {
+    font-family: var(--font-display); font-size: 11px; font-weight: 600;
+    letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted);
+  }
+  .product-name {
+    font-size: 14px; font-weight: 500; color: var(--white); line-height: 1.4;
+  }
+  .product-spec {
+    font-size: 12px; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap;
+  }
+  .spec-pill {
+    background: var(--black); border: 1px solid var(--gray2);
+    border-radius: 3px; padding: 2px 7px;
+    font-family: var(--font-display); font-size: 11px; font-weight: 600; letter-spacing: 0.04em;
+  }
+  .product-footer {
+    padding: 12px 16px;
+    border-top: 1px solid var(--gray2);
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 8px;
+  }
+  .product-price {
+    font-family: var(--font-display); font-weight: 800; font-size: 20px; color: var(--white);
+  }
+  .product-price-old {
+    font-size: 12px; color: var(--muted); text-decoration: line-through; margin-left: 4px;
+  }
+  .product-stars { display: flex; gap: 2px; align-items: center; }
+  .star { color: var(--accent); font-size: 12px; }
+  .star-count { font-size: 11px; color: var(--muted); margin-left: 4px; }
+  .add-to-cart {
+    background: var(--black); border: 1px solid var(--gray3);
+    color: var(--white); border-radius: 5px; padding: 7px 12px;
+    font-family: var(--font-display); font-weight: 700; font-size: 12px; letter-spacing: 0.08em;
+    text-transform: uppercase; cursor: pointer; transition: all .2s; white-space: nowrap;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .add-to-cart:hover { background: var(--accent); color: var(--black); border-color: var(--accent); }
+
+  /* ── COMPAT CHECKER ── */
+  .compat-section {
+    background: var(--gray);
+    border-top: 1px solid var(--gray2);
+    border-bottom: 1px solid var(--gray2);
+  }
+  .compat-inner {
+    display: flex; align-items: center; gap: 40px;
+    background: var(--black); border: 1px solid var(--gray2);
+    border-radius: 12px; padding: 32px 36px;
+  }
+  .compat-icon-wrap {
+    width: 64px; height: 64px; flex-shrink: 0;
+    background: var(--gray); border: 1px solid var(--gray2);
+    border-radius: 12px; display: flex; align-items: center; justify-content: center;
+    font-size: 30px; color: var(--accent);
+  }
+  .compat-text { flex: 1; }
+  .compat-title {
+    font-family: var(--font-display); font-weight: 800; font-size: 26px;
+    text-transform: uppercase; letter-spacing: 0.02em; margin-bottom: 6px;
+  }
+  .compat-desc { font-size: 14px; color: var(--muted); max-width: 500px; }
+  .compat-selects {
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+  }
+  .compat-select {
+    background: var(--gray); border: 1px solid var(--gray3); color: var(--white);
+    font-family: var(--font-body); font-size: 13px;
+    padding: 8px 12px; border-radius: 6px; cursor: pointer;
+    outline: none; min-width: 130px;
+    appearance: none; -webkit-appearance: none;
+  }
+  .compat-select:focus { border-color: var(--accent); }
+  .compat-btn {
+    background: var(--accent); color: var(--black);
+    border: none; border-radius: 6px; padding: 9px 20px;
+    font-family: var(--font-display); font-weight: 700; font-size: 13px;
+    letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer;
+    transition: transform .15s;
+  }
+  .compat-btn:hover { transform: translateY(-1px); }
+  .compat-result {
+    margin-top: 10px; font-size: 13px; padding: 8px 12px;
+    border-radius: 6px; display: none;
+  }
+  .compat-result.ok { background: rgba(0,200,100,0.1); color: #00c864; border: 1px solid rgba(0,200,100,0.2); }
+  .compat-result.warn { background: rgba(255,75,31,0.1); color: var(--accent2); border: 1px solid rgba(255,75,31,0.2); }
+
+  /* ── TRUST SIGNALS ── */
+  .trust-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px;
+  }
+  .trust-card {
+    background: var(--gray); border: 1px solid var(--gray2);
+    border-radius: 10px; padding: 24px;
+    display: flex; gap: 16px; align-items: flex-start;
+  }
+  .trust-icon {
+    width: 40px; height: 40px; flex-shrink: 0;
+    background: var(--black); border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; color: var(--accent);
+  }
+  .trust-name {
+    font-family: var(--font-display); font-weight: 700; font-size: 15px;
+    text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px;
+  }
+  .trust-desc { font-size: 12px; color: var(--muted); line-height: 1.5; }
+
+  /* ── FOOTER ── */
+  footer {
+    background: var(--gray); border-top: 1px solid var(--gray2);
+    padding: 60px 40px 30px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    margin-bottom: 48px;
+  }
+  .footer-brand .nav-logo { font-size: 26px; display: block; margin-bottom: 16px; }
+  .footer-desc { font-size: 13px; color: var(--muted); max-width: 260px; line-height: 1.7; }
+  .footer-col-title {
+    font-family: var(--font-display); font-weight: 700; font-size: 13px;
+    letter-spacing: 0.12em; text-transform: uppercase; color: var(--white);
+    margin-bottom: 16px;
+  }
+  .footer-links { display: flex; flex-direction: column; gap: 10px; }
+  .footer-links a { font-size: 13px; color: var(--muted); transition: color .2s; }
+  .footer-links a:hover { color: var(--accent); }
+  .footer-bottom {
+    border-top: 1px solid var(--gray2); padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px; color: var(--muted);
+  }
+  .footer-bottom-links { display: flex; gap: 20px; }
+  .footer-bottom-links a { color: var(--muted); transition: color .2s; }
+  .footer-bottom-links a:hover { color: var(--white); }
+
+  /* ── CART DRAWER ── */
+  .cart-overlay {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.7);
+    z-index: 200; opacity: 0; pointer-events: none; transition: opacity .3s;
+  }
+  .cart-overlay.open { opacity: 1; pointer-events: all; }
+  .cart-drawer {
+    position: fixed; right: 0; top: 0; bottom: 0; width: 380px;
+    background: var(--gray); border-left: 1px solid var(--gray2);
+    z-index: 201; transform: translateX(100%); transition: transform .35s cubic-bezier(.4,0,.2,1);
+    display: flex; flex-direction: column;
+  }
+  .cart-drawer.open { transform: translateX(0); }
+  .cart-header {
+    padding: 20px 24px; border-bottom: 1px solid var(--gray2);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .cart-title {
+    font-family: var(--font-display); font-weight: 800; font-size: 20px;
+    text-transform: uppercase; letter-spacing: 0.06em;
+  }
+  .cart-close {
+    width: 32px; height: 32px; border-radius: 6px;
+    background: var(--black); border: 1px solid var(--gray3);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; cursor: pointer; color: var(--muted); transition: all .2s;
+  }
+  .cart-close:hover { color: var(--white); border-color: var(--gray3); }
+  .cart-items { flex: 1; overflow-y: auto; padding: 20px 24px; }
+  .cart-empty { text-align: center; padding: 60px 0; color: var(--muted); font-size: 14px; }
+  .cart-item {
+    display: flex; gap: 12px; padding: 14px 0; border-bottom: 1px solid var(--gray2);
+  }
+  .cart-item-img {
+    width: 56px; height: 56px; background: var(--black); border: 1px solid var(--gray2);
+    border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-size: 10px; color: var(--muted); font-weight: 700;
+  }
+  .cart-item-info { flex: 1; }
+  .cart-item-name { font-size: 13px; font-weight: 500; margin-bottom: 4px; }
+  .cart-item-price {
+    font-family: var(--font-display); font-weight: 700; font-size: 15px; color: var(--accent);
+  }
+  .cart-item-remove { color: var(--muted); font-size: 12px; cursor: pointer; margin-top: 4px; display: inline-block; }
+  .cart-item-remove:hover { color: var(--accent2); }
+  .cart-footer { padding: 20px 24px; border-top: 1px solid var(--gray2); }
+  .cart-total {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 16px;
+  }
+  .cart-total-label { font-family: var(--font-display); font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: 0.08em; }
+  .cart-total-value { font-family: var(--font-display); font-weight: 800; font-size: 24px; color: var(--accent); }
+  .checkout-btn {
+    width: 100%; background: var(--accent); color: var(--black);
+    border: none; border-radius: 6px; padding: 14px;
+    font-family: var(--font-display); font-weight: 800; font-size: 15px;
+    letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; transition: transform .15s;
+  }
+  .checkout-btn:hover { transform: translateY(-1px); }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">NEXCORE</div>
+  <div class="nav-search">
+    <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+    <input type="text" placeholder="Search SSDs, RAM, CPUs…" id="searchInput">
+  </div>
+  <div class="nav-links">
+    <a href="#categories">Shop</a>
+    <a href="#featured">Deals</a>
+    <a href="#compat">PC Builder</a>
+    <a href="#footer">Support</a>
+  </div>
+  <div class="nav-actions">
+    <div class="nav-icon-btn" onclick="openCart()" title="Cart">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      <div class="cart-badge" id="cartCount">0</div>
+    </div>
+    <div class="nav-icon-btn" title="Account">
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+  </div>
+</nav>
+
+<!-- TICKER -->
+<div class="ticker">
+  <div class="ticker-inner" id="ticker">
+    <span class="ticker-item">Free shipping on orders over $99</span>
+    <span class="ticker-item ticker-dot">◆</span>
+    <span class="ticker-item">New: Samsung 990 Pro 4TB in stock</span>
+    <span class="ticker-item ticker-dot">◆</span>
+    <span class="ticker-item">DDR5 RAM sale — up to 25% off</span>
+    <span class="ticker-item ticker-dot">◆</span>
+    <span class="ticker-item">AMD Ryzen 9000 series now available</span>
+    <span class="ticker-item ticker-dot">◆</span>
+    <span class="ticker-item">Free shipping on orders over $99</span>
+    <span class="ticker-item ticker-dot">◆</span>
+    <span class="ticker-item">New: Samsung 990 Pro 4TB in stock</span>
+    <span class="ticker-item ticker-dot">◆</span>
+    <span class="ticker-item">DDR5 RAM sale — up to 25% off</span>
+    <span class="ticker-item ticker-dot">◆</span>
+    <span class="ticker-item">AMD Ryzen 9000 series now available</span>
+    <span class="ticker-item ticker-dot">◆</span>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero" style="padding-top:80px;padding-bottom:80px;">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">New arrivals 2025</div>
+    <h1 class="hero-title">Build<br><em>Faster.</em><br>Go Further.</h1>
+    <p class="hero-sub">Premium SSDs, RAM, CPUs and more — hand-picked for builders who demand performance.</p>
+    <div class="hero-ctas">
+      <a href="#featured" class="btn-primary">Shop now</a>
+      <a href="#compat" class="btn-outline">Check compatibility</a>
+    </div>
+  </div>
+  <div class="hero-image">
+    <div class="hero-product-visual">
+      <span class="hero-chip">PCIe</span>
+      <div class="hero-spec-badge b1">
+        <span class="val">7.4</span>GB/s read
+      </div>
+      <div class="hero-spec-badge b2">
+        <span class="val">DDR5</span>6400 MHz
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section class="categories" id="categories">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Browse</div>
+      <h2 class="section-title">Shop by category</h2>
+    </div>
+    <span class="view-all">All products →</span>
+  </div>
+  <div class="cat-grid">
+    <div class="cat-card">
+      <div class="cat-icon">
+        <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M12 12h.01"/><path d="M7 12h.01"/><path d="M17 12h.01"/></svg>
+      </div>
+      <div>
+        <div class="cat-name">SSDs</div>
+        <div class="cat-count">84 products</div>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-icon">
+        <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="1" y="4" width="22" height="6" rx="2"/><rect x="1" y="14" width="22" height="6" rx="2"/><line x1="9" y1="7" x2="9.01" y2="7"/><line x1="9" y1="17" x2="9.01" y2="17"/></svg>
+      </div>
+      <div>
+        <div class="cat-name">RAM</div>
+        <div class="cat-count">62 products</div>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-icon">
+        <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M9 2v2M15 20v2M9 20v2M2 15h2M2 9h2M20 15h2M20 9h2"/></svg>
+      </div>
+      <div>
+        <div class="cat-name">CPUs</div>
+        <div class="cat-count">48 products</div>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-icon">
+        <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="18" rx="2"/><path d="M8 3v18M16 3v18M2 12h20"/></svg>
+      </div>
+      <div>
+        <div class="cat-name">Motherboards</div>
+        <div class="cat-count">39 products</div>
+      </div>
+    </div>
+    <div class="cat-card">
+      <div class="cat-icon">
+        <svg width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="10" rx="2"/><path d="M7 7V5M17 7V5M7 17v2M17 17v2"/></svg>
+      </div>
+      <div>
+        <div class="cat-name">GPUs</div>
+        <div class="cat-count">31 products</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROMO BANNERS -->
+<section style="padding-top:0;padding-bottom:0;padding-left:40px;padding-right:40px;margin:40px 0;">
+  <div class="promo-grid">
+    <div class="promo-card accent">
+      <div>
+        <div class="promo-tag">Limited time</div>
+        <div class="promo-h">DDR5 RAM<br>Mega Sale</div>
+        <div class="promo-sub">Up to 25% off all DDR5 kits this week only</div>
+      </div>
+      <div class="promo-arrow">Shop deals →</div>
+      <div class="promo-deco">RAM</div>
+    </div>
+    <div class="promo-card dark">
+      <div>
+        <div class="promo-tag">New in stock</div>
+        <div class="promo-h">NVMe Gen 5<br>SSDs</div>
+        <div class="promo-sub">Samsung 990 Pro, WD Black SN850X and more</div>
+      </div>
+      <div class="promo-arrow" style="color:var(--accent)">Browse SSDs →</div>
+      <div class="promo-deco">SSD</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURED PRODUCTS -->
+<section id="featured">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Top picks</div>
+      <h2 class="section-title">Best sellers</h2>
+    </div>
+    <span class="view-all">View all →</span>
+  </div>
+  <div class="product-grid" id="productGrid"></div>
+</section>
+
+<!-- COMPATIBILITY CHECKER -->
+<section class="compat-section" id="compat">
+  <div class="section-header" style="margin-bottom:24px">
+    <div>
+      <div class="section-label">Smart tool</div>
+      <h2 class="section-title">Parts compatibility</h2>
+    </div>
+  </div>
+  <div class="compat-inner">
+    <div class="compat-icon-wrap">
+      <svg width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><path d="M15 2v2M9 2v2M15 20v2M9 20v2M2 15h2M2 9h2M20 15h2M20 9h2"/></svg>
+    </div>
+    <div class="compat-text">
+      <div class="compat-title">Check if your parts work together</div>
+      <div class="compat-desc">Select a CPU and motherboard to instantly verify socket compatibility before you buy.</div>
+      <div id="compatResult" class="compat-result"></div>
+    </div>
+    <div class="compat-selects">
+      <select class="compat-select" id="cpuSelect">
+        <option value="">Select CPU</option>
+        <option value="am5">AMD Ryzen 7000 (AM5)</option>
+        <option value="am5">AMD Ryzen 9000 (AM5)</option>
+        <option value="lga1700">Intel Core 13th Gen (LGA1700)</option>
+        <option value="lga1700">Intel Core 14th Gen (LGA1700)</option>
+        <option value="lga1851">Intel Core Ultra 200 (LGA1851)</option>
+      </select>
+      <select class="compat-select" id="mbSelect">
+        <option value="">Select Motherboard</option>
+        <option value="am5">ASUS ROG X670E (AM5)</option>
+        <option value="am5">MSI MEG X870 (AM5)</option>
+        <option value="lga1700">ASUS ROG Z790 (LGA1700)</option>
+        <option value="lga1700">Gigabyte Z790 Aorus (LGA1700)</option>
+        <option value="lga1851">ASUS ROG Z890 (LGA1851)</option>
+      </select>
+      <button class="compat-btn" onclick="checkCompat()">Check →</button>
+    </div>
+  </div>
+</section>
+
+<!-- NEW ARRIVALS -->
+<section style="background:var(--gray)">
+  <div class="section-header">
+    <div>
+      <div class="section-label">Just dropped</div>
+      <h2 class="section-title">New arrivals</h2>
+    </div>
+    <span class="view-all">View all →</span>
+  </div>
+  <div class="product-grid" id="newGrid"></div>
+</section>
+
+<!-- TRUST SIGNALS -->
+<section>
+  <div class="trust-grid">
+    <div class="trust-card">
+      <div class="trust-icon">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M5 12H3l9-9 9 9h-2"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg>
+      </div>
+      <div>
+        <div class="trust-name">Free shipping</div>
+        <div class="trust-desc">On all orders over $99. Express available at checkout.</div>
+      </div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      </div>
+      <div>
+        <div class="trust-name">3-year warranty</div>
+        <div class="trust-desc">All products covered. Easy claims, no hassle.</div>
+      </div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21 10V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l2-1.14"/><path d="M16.5 9.4L7.55 4.24M12 22v-8.55M3.29 7l8.71 5 8.71-5"/><circle cx="18.5" cy="15.5" r="2.5"/><path d="M20.27 17.27L22 19"/></svg>
+      </div>
+      <div>
+        <div class="trust-name">Easy returns</div>
+        <div class="trust-desc">30-day returns on all items. Free return shipping included.</div>
+      </div>
+    </div>
+    <div class="trust-card">
+      <div class="trust-icon">
+        <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+      </div>
+      <div>
+        <div class="trust-name">Verified reviews</div>
+        <div class="trust-desc">Real reviews from real builders. 4.9★ average rating.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="footer">
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="nav-logo">NEXCORE</span>
+      <p class="footer-desc">Your source for premium PC hardware — SSDs, RAM, CPUs, motherboards and more. Built for builders.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">Shop</div>
+      <div class="footer-links">
+        <a href="#">SSDs</a>
+        <a href="#">RAM</a>
+        <a href="#">CPUs</a>
+        <a href="#">Motherboards</a>
+        <a href="#">GPUs</a>
+        <a href="#">All products</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Account</div>
+      <div class="footer-links">
+        <a href="#">Sign in</a>
+        <a href="#">Register</a>
+        <a href="#">Order history</a>
+        <a href="#">Wishlist</a>
+        <a href="#">Track order</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Support</div>
+      <div class="footer-links">
+        <a href="#">FAQ</a>
+        <a href="#">Contact us</a>
+        <a href="#">Returns</a>
+        <a href="#">PC build guides</a>
+        <a href="#">Compatibility checker</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 NEXCORE. All rights reserved.</span>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Cookies</a>
+    </div>
+  </div>
+</footer>
+
+<!-- CART DRAWER -->
+<div class="cart-overlay" id="cartOverlay" onclick="closeCart()"></div>
+<div class="cart-drawer" id="cartDrawer">
+  <div class="cart-header">
+    <div class="cart-title">Your cart</div>
+    <div class="cart-close" onclick="closeCart()">✕</div>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <div class="cart-empty" id="cartEmpty">Your cart is empty.</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total">
+      <span class="cart-total-label">Total</span>
+      <span class="cart-total-value" id="cartTotal">$0.00</span>
+    </div>
+    <button class="checkout-btn">Proceed to checkout →</button>
+  </div>
+</div>
+
+<script>
+const products = [
+  { id:1, brand:'Samsung', name:'990 Pro NVMe SSD', specs:['2TB','PCIe 5.0','7,450 MB/s'], price:200, oldPrice:229, stars:5, reviews:312, badge:'sale', img:'SSD' },
+  { id:2, brand:'G.Skill', name:'Trident Z5 RGB DDR5', specs:['32GB','DDR5-6400','CL32'], price:149, oldPrice:null, stars:5, reviews:204, badge:'hot', img:'RAM' },
+  { id:3, brand:'AMD', name:'Ryzen 9 9950X Processor', specs:['16-core','5.7GHz','AM5'], price:649, oldPrice:699, stars:5, reviews:187, badge:'new', img:'CPU' },
+  { id:4, brand:'WD', name:'Black SN850X NVMe SSD', specs:['1TB','PCIe 4.0','7,300 MB/s'], price:99, oldPrice:129, stars:4, reviews:445, badge:'sale', img:'SSD' },
+];
+const newArrivals = [
+  { id:5, brand:'Corsair', name:'Dominator Titanium DDR5', specs:['64GB','DDR5-6600','CL32'], price:319, oldPrice:null, stars:5, reviews:88, badge:'new', img:'RAM' },
+  { id:6, brand:'Intel', name:'Core Ultra 9 285K CPU', specs:['24-core','5.7GHz','LGA1851'], price:589, oldPrice:null, stars:4, reviews:142, badge:'new', img:'CPU' },
+  { id:7, brand:'Crucial', name:'T705 PCIe Gen 5 SSD', specs:['4TB','PCIe 5.0','14,500 MB/s'], price:449, oldPrice:null, stars:5, reviews:61, badge:'new', img:'SSD' },
+  { id:8, brand:'ASUS', name:'ROG Crosshair X870E', specs:['AM5','DDR5','PCIe 5.0'], price:499, oldPrice:null, stars:5, reviews:73, badge:'new', img:'MOBO' },
+];
+
+let cart = [];
+
+function stars(n) {
+  return '★'.repeat(n) + '☆'.repeat(5-n);
+}
+
+function renderProducts(list, containerId) {
+  const el = document.getElementById(containerId);
+  el.innerHTML = list.map(p => `
+    <div class="product-card">
+      <div class="product-img">
+        <span class="product-img-text">${p.img}</span>
+        ${p.badge ? `<span class="product-badge badge-${p.badge}">${p.badge}</span>` : ''}
+      </div>
+      <div class="product-body">
+        <div class="product-brand">${p.brand}</div>
+        <div class="product-name">${p.name}</div>
+        <div class="product-spec">
+          ${p.specs.map(s => `<span class="spec-pill">${s}</span>`).join('')}
+        </div>
+        <div class="product-stars">
+          <span class="star">${stars(p.stars)}</span>
+          <span class="star-count">(${p.reviews})</span>
+        </div>
+      </div>
+      <div class="product-footer">
+        <div>
+          <span class="product-price">$${p.price}</span>
+          ${p.oldPrice ? `<span class="product-price-old">$${p.oldPrice}</span>` : ''}
+        </div>
+        <button class="add-to-cart" onclick="addToCart(${p.id})">
+          + Add
+        </button>
+      </div>
+    </div>
+  `).join('');
+}
+
+function addToCart(id) {
+  const all = [...products, ...newArrivals];
+  const p = all.find(x => x.id === id);
+  if (!p) return;
+  const existing = cart.find(x => x.id === id);
+  if (existing) { existing.qty++; }
+  else { cart.push({ ...p, qty: 1 }); }
+  updateCart();
+  openCart();
+}
+
+function removeFromCart(id) {
+  cart = cart.filter(x => x.id !== id);
+  updateCart();
+}
+
+function updateCart() {
+  const count = cart.reduce((s, x) => s + x.qty, 0);
+  document.getElementById('cartCount').textContent = count;
+  const total = cart.reduce((s, x) => s + x.price * x.qty, 0);
+  document.getElementById('cartTotal').textContent = '$' + total.toFixed(2);
+  const el = document.getElementById('cartItems');
+  const empty = document.getElementById('cartEmpty');
+  if (cart.length === 0) {
+    empty.style.display = 'block';
+    el.innerHTML = '';
+    el.appendChild(empty);
+  } else {
+    empty.style.display = 'none';
+    el.innerHTML = cart.map(p => `
+      <div class="cart-item">
+        <div class="cart-item-img">${p.img}</div>
+        <div class="cart-item-info">
+          <div class="cart-item-name">${p.brand} ${p.name}</div>
+          <div class="cart-item-price">$${(p.price * p.qty).toFixed(2)}</div>
+          <span class="cart-item-remove" onclick="removeFromCart(${p.id})">Remove</span>
+        </div>
+      </div>
+    `).join('');
+  }
+}
+
+function openCart() {
+  document.getElementById('cartOverlay').classList.add('open');
+  document.getElementById('cartDrawer').classList.add('open');
+}
+function closeCart() {
+  document.getElementById('cartOverlay').classList.remove('open');
+  document.getElementById('cartDrawer').classList.remove('open');
+}
+
+function checkCompat() {
+  const cpu = document.getElementById('cpuSelect').value;
+  const mb = document.getElementById('mbSelect').value;
+  const res = document.getElementById('compatResult');
+  if (!cpu || !mb) { res.style.display='none'; return; }
+  res.style.display = 'block';
+  if (cpu === mb) {
+    res.className = 'compat-result ok';
+    res.textContent = '✔ Compatible — this CPU and motherboard share the same socket. Safe to buy together.';
+  } else {
+    res.className = 'compat-result warn';
+    res.textContent = '✖ Incompatible — socket mismatch detected. Choose a different CPU or motherboard.';
+  }
+}
+
+renderProducts(products, 'productGrid');
+renderProducts(newArrivals, 'newGrid');
+updateCart();
+</script>
+</body>
+</html>
